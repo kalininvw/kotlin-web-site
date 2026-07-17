@@ -75,6 +75,19 @@ class FamilyAggregate:
             "next_action": self.next_action,
         }
 
+    def stage1_ready(self) -> bool:
+        return self.readiness_status == "ready_for_template"
+
+    def euro2_ready(self) -> bool:
+        return self.readiness_status == "ready_for_template"
+
+    def default_operation(self) -> str:
+        if self.has_euro2:
+            return "euro2"
+        if self.has_stage1:
+            return "stage1"
+        return "euro2"
+
 
 def choose_family_key(record: IndexRecord) -> str:
     if record.software_candidates:
@@ -261,6 +274,28 @@ def write_summary(path: Path, families: Sequence[FamilyAggregate]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def build_operation_matrix(families: Sequence[FamilyAggregate]) -> List[Dict[str, str]]:
+    rows: List[Dict[str, str]] = []
+    for family in families:
+        rows.append(
+            {
+                "family_key": family.family_key,
+                "software_id": family.software_id,
+                "ecu_primary": family.ecu_primary,
+                "readiness_status": family.readiness_status,
+                "readiness_score": str(family.readiness_score),
+                "has_stage1_signal": "true" if family.has_stage1 else "false",
+                "has_euro2_signal": "true" if family.has_euro2 else "false",
+                "stage1_ready": "true" if family.stage1_ready() else "false",
+                "euro2_ready": "true" if family.euro2_ready() else "false",
+                "target_operations": "stage1|euro2",
+                "default_operation": family.default_operation(),
+                "recommended_action": family.next_action,
+            }
+        )
+    return rows
+
+
 def build_brand_roadmap(
     families: Sequence[FamilyAggregate],
     ident_priority_csv: Path,
@@ -303,6 +338,10 @@ def build_brand_roadmap(
                     "match_type": match_type,
                     "readiness_status": family.readiness_status if family else "needs_data",
                     "readiness_score": str(family.readiness_score) if family else "0",
+                    "target_operations": "stage1|euro2",
+                    "default_operation": family.default_operation() if family else "euro2",
+                    "stage1_ready": "true" if family and family.stage1_ready() else "false",
+                    "euro2_ready": "true" if family and family.euro2_ready() else "false",
                     "recommended_action": (
                         family.next_action if family else "collect-stock-mod-pair-and-ident-docs"
                     ),
@@ -332,6 +371,8 @@ def main() -> None:
     families_csv = out_dir / "stage_core_families.csv"
     backlog_csv = out_dir / "stage_core_backlog.csv"
     profiles_json = out_dir / "stage_core_operation_profiles.json"
+    matrix_csv = out_dir / "stage_core_operation_matrix.csv"
+    euro2_queue_csv = out_dir / "stage_core_euro2_queue.csv"
     summary_txt = out_dir / "stage_core_summary.txt"
     roadmap_csv = out_dir / "stage_core_brand_roadmap.csv"
 
@@ -382,6 +423,43 @@ def main() -> None:
         ],
     )
     write_profiles(profiles_json)
+    operation_matrix = build_operation_matrix(families)
+    write_csv(
+        matrix_csv,
+        operation_matrix,
+        [
+            "family_key",
+            "software_id",
+            "ecu_primary",
+            "readiness_status",
+            "readiness_score",
+            "has_stage1_signal",
+            "has_euro2_signal",
+            "stage1_ready",
+            "euro2_ready",
+            "target_operations",
+            "default_operation",
+            "recommended_action",
+        ],
+    )
+    write_csv(
+        euro2_queue_csv,
+        [row for row in operation_matrix if row["euro2_ready"] == "true"],
+        [
+            "family_key",
+            "software_id",
+            "ecu_primary",
+            "readiness_status",
+            "readiness_score",
+            "has_stage1_signal",
+            "has_euro2_signal",
+            "stage1_ready",
+            "euro2_ready",
+            "target_operations",
+            "default_operation",
+            "recommended_action",
+        ],
+    )
     write_summary(summary_txt, families)
 
     roadmap_rows: List[Dict[str, str]] = []
@@ -401,6 +479,10 @@ def main() -> None:
                 "match_type",
                 "readiness_status",
                 "readiness_score",
+                "target_operations",
+                "default_operation",
+                "stage1_ready",
+                "euro2_ready",
                 "recommended_action",
             ],
         )
@@ -412,6 +494,8 @@ def main() -> None:
     print(f"written={families_csv}")
     print(f"written={backlog_csv}")
     print(f"written={profiles_json}")
+    print(f"written={matrix_csv}")
+    print(f"written={euro2_queue_csv}")
     print(f"written={summary_txt}")
     if args.ident_priority_csv:
         print(f"written={roadmap_csv}")

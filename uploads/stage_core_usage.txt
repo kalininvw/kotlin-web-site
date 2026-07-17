@@ -20,6 +20,8 @@ Stage core preparation usage
    - stage_core_families.csv
    - stage_core_backlog.csv
    - stage_core_operation_profiles.json
+   - stage_core_operation_matrix.csv
+   - stage_core_euro2_queue.csv
    - stage_core_summary.txt
    - stage_core_brand_roadmap.csv (when --ident-priority-csv is provided)
 
