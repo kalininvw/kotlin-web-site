@@ -53,6 +53,7 @@ SW_PATTERNS: Sequence[re.Pattern[str]] = (
     re.compile(r"(?<![A-Z0-9])F01R[0-9A-Z]{6,10}(?![A-Z0-9])", re.IGNORECASE),
     re.compile(r"(?<![A-Z0-9])3600010-[A-Z0-9]{4,8}(?![A-Z0-9])", re.IGNORECASE),
     re.compile(r"(?<![A-Z0-9])Z[0-9A-Z]{9,11}(?![A-Z0-9])", re.IGNORECASE),
+    re.compile(r"(?<![A-Z0-9])M[0-9][A-Z0-9]{6}(?![A-Z0-9])", re.IGNORECASE),
 )
 
 BL_PATTERNS: Sequence[re.Pattern[str]] = (

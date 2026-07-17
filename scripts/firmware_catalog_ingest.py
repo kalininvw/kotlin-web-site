@@ -45,6 +45,7 @@ SOFTWARE_PATTERNS: Sequence[re.Pattern[str]] = (
     re.compile(r"(?<![A-Z0-9])89661-[A-Z0-9]{3,6}(?:-[A-Z0-9]{1,3})?(?![A-Z0-9])", re.IGNORECASE),
     re.compile(r"(?<![A-Z0-9])F01R[0-9A-Z]{6,10}(?![A-Z0-9])", re.IGNORECASE),
     re.compile(r"(?<![A-Z0-9])3600010-[A-Z0-9]{4,8}(?![A-Z0-9])", re.IGNORECASE),
+    re.compile(r"(?<![A-Z0-9])M[0-9][A-Z0-9]{6}(?![A-Z0-9])", re.IGNORECASE),
 )
 ECU_RE = re.compile(
     r"(?<![A-Z0-9])("
@@ -66,7 +67,7 @@ FEATURE_ALIASES: Dict[str, Sequence[str]] = {
     "stage1": ("stage1", "stage 1", "st1", "tune1", "rt47 stage1", "modrt47 stage1"),
     "euro2": ("euro2", "euro 2", "euro-2", "евро2", "евро 2", "e2", "mod e2"),
     "stock": ("stock", "stok", "сток", "ori", "original"),
-    "mod": ("mod", "modified", "тюнинг", "tuned"),
+    "mod": ("mod", "modified", "тюнинг", "tuned", "starpower", "startpower"),
     "rt47": ("rt47", "modrt47"),
 }
 
