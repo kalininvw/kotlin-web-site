@@ -1,0 +1,14 @@
+Toyota generation mapping summary v2
+total=4467
+changed_by_family_inference=820
+Gen1: 2661
+Unknown: 1397
+Gen2: 409
+confidence:
+high: 2180
+low: 890
+unknown: 1397
+89663-F0N05-: Gen2 (low via family-prefix-heuristic) cpu=
+89663-F0N23-: Gen2 (high via cpu) cpu=D76F0196F1 (1.5Mb)
+89663-F0N41-: Gen2 (high via cpu) cpu=D76F0219F1 (2Mb)
+89663-F0N43-: Gen2 (high via cpu) cpu=D76F0219F1 (2Mb)
