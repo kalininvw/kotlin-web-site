@@ -28,3 +28,10 @@ Stage core preparation usage
 Notes:
 - This step prepares family readiness and operation templates only.
 - Binary transformation logic must be implemented as a separate module.
+
+4) Build unified family safety manifest:
+   python3 /workspace/scripts/family_manifest_builder.py \
+     --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+     --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv" \
+     --stage-families-csv "/workspace/uploads/stage_core_run/stage_core_families.csv" \
+     --out-dir "/workspace/uploads/family_manifest_run"

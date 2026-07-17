@@ -1,0 +1,31 @@
+{
+  "version": "v1",
+  "notes": [
+    "Conservative defaults: known ECU family support does not imply project-level verified checksum.",
+    "Set status=verified_project only when checksum path was explicitly validated for that project."
+  ],
+  "by_ecu": {
+    "MG1UA008": {
+      "status": "conditional_support",
+      "comment": "Public tooling indicates support, but project-level verification is still required."
+    },
+    "MG1US008": {
+      "status": "conditional_support",
+      "comment": "Public tooling indicates support, but project-level verification is still required."
+    },
+    "MG1US708": {
+      "status": "conditional_support",
+      "comment": "Public tooling indicates support, but project-level verification is still required."
+    }
+  },
+  "by_sw_prefix": {
+    "89663-": {
+      "status": "unknown",
+      "comment": "Software prefix alone is insufficient for checksum readiness."
+    },
+    "F01R": {
+      "status": "conditional_support",
+      "comment": "Requires ECU-level and toolchain verification per project."
+    }
+  }
+}
