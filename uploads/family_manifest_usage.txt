@@ -25,3 +25,8 @@ Safety logic:
   checksum not project-verified.
 - READY_FOR_CONTROLLED_BUILD:
   only when no blockers remain.
+
+Next step:
+  python3 /workspace/scripts/safety_precheck_builder.py \
+    --manifest-csv "/workspace/uploads/family_manifest_run/family_manifest.csv" \
+    --out-dir "/workspace/uploads/safety_precheck_run"

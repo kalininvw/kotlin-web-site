@@ -1,0 +1,4 @@
+task_id,target_brand,family_key,family_keys,software_id,ecu_primary,risk_level,task_type,check_item,evidence_required,status
+T0001,TOYOTA,SW:89663-F0N05,SW:89663-F0N05,89663-F0N05,,medium,verify_checksum_path,Project-level checksum verification required,verified checksum module/toolchain + test proof,pending
+T0002,HAVAL,ECU:DCM 7.1AP,ECU:DCM 7.1AP|ECU:DCM7.1AP|ECU:EDC17C53|ECU:EDC17C81|ECU:ME17.8.8|ECU:ME17U6|ECU:MED17.8.10|ECU:MG1UA008|ECU:MG1US008|ECU:MT20U|ECU:MT22.1|ECU:MT92,F01R00DU8DUP8,DCM 7.1AP,high,collect_stock_reference,Provide stock binary for this family,stock_file + sha256 + source note,pending
+T0003,HAVAL,ECU:DCM 7.1AP,ECU:DCM 7.1AP|ECU:DCM7.1AP|ECU:EDC17C53|ECU:EDC17C81|ECU:ME17.8.8|ECU:ME17U6|ECU:MED17.8.10|ECU:MG1UA008|ECU:MG1US008|ECU:MT20U|ECU:MT22.1|ECU:MT92,F01R00DU8DUP8,DCM 7.1AP,high,verify_checksum_path,Project-level checksum verification required,verified checksum module/toolchain + test proof,pending
