@@ -1,0 +1,84 @@
+{
+  "version": "v1",
+  "scope": "systemic-catalog-rules",
+  "source": "local-price-hint-only",
+  "notes": [
+    "Rules classify request labels, not binary patch logic.",
+    "Apply to all brands/models by token normalization."
+  ],
+  "normalization": {
+    "lowercase": true,
+    "trim_spaces": true,
+    "dash_unify": [
+      "-",
+      "_",
+      " "
+    ],
+    "keep_alnum": true
+  },
+  "feature_aliases": {
+    "stage1": [
+      "stage1",
+      "stage 1",
+      "st1",
+      "tune1",
+      "modrt47 stage1",
+      "rt47 stage1"
+    ],
+    "euro2": [
+      "euro2",
+      "euro 2",
+      "euro-2",
+      "евро2",
+      "евро 2",
+      "e2",
+      "mod e2"
+    ],
+    "stock": [
+      "stock",
+      "stok",
+      "сток"
+    ],
+    "misfire": [
+      "misf",
+      "misfire",
+      "пропуски"
+    ],
+    "evap": [
+      "evap",
+      "адсорбер"
+    ]
+  },
+  "price_hint_mg1": {
+    "MG1UA008": {
+      "price_credits": "1000",
+      "capabilities": [
+        "Stage1",
+        "Euro-2",
+        "Euro-0",
+        "Misf",
+        "Evap",
+        "Stock"
+      ],
+      "brand_bucket": "КИТАЙ CHINA",
+      "engine_type": "Бензин"
+    },
+    "MG1US008": {
+      "price_credits": "1000",
+      "capabilities": [
+        "Stage1",
+        "Euro-2",
+        "Euro-0",
+        "Misf",
+        "Evap",
+        "Stock"
+      ],
+      "brand_bucket": "КИТАЙ CHINA",
+      "engine_type": "Бензин"
+    }
+  },
+  "evidence": {
+    "mg1_rows_found": 2,
+    "rt47_rows_found_in_price": 0
+  }
+}
