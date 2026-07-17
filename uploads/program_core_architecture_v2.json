@@ -1,0 +1,85 @@
+{
+  "version": "v2",
+  "date": "2026-07-17",
+  "focus_brands_first_wave": [
+    "TOYOTA",
+    "HAVAL"
+  ],
+  "principles": [
+    "project-centric lineage",
+    "id-first routing",
+    "catalog-wide normalization",
+    "operation-level validation gates",
+    "read-only source ingestion"
+  ],
+  "modules": {
+    "catalog_ingest": {
+      "script": "scripts/firmware_catalog_ingest.py",
+      "outputs": [
+        "firmware_catalog_index.csv",
+        "firmware_catalog_stock_mod_pairs.csv",
+        "firmware_catalog_ingest_summary.txt"
+      ]
+    },
+    "ident_ingest": {
+      "script": "scripts/ident_docs_ingest.py",
+      "inputs": [
+        "id/bl/sw/hw/ecu text docs",
+        "optional firmware_catalog_index.csv"
+      ],
+      "outputs": [
+        "ident_docs_index.csv",
+        "ident_family_hints.csv",
+        "ident_brand_priority_toyota_haval.csv",
+        "ident_priority_toyota.csv",
+        "ident_priority_haval.csv"
+      ]
+    },
+    "stage_core_builder": {
+      "script": "scripts/stage_core_builder.py",
+      "outputs": [
+        "stage_core_families.csv",
+        "stage_core_operation_matrix.csv",
+        "stage_core_euro2_queue.csv",
+        "stage_core_brand_roadmap.csv"
+      ]
+    }
+  },
+  "operations": {
+    "stage1": {
+      "aliases": [
+        "stage1",
+        "stage 1",
+        "st1",
+        "rt47 stage1",
+        "modrt47 stage1"
+      ],
+      "validation_checks": [
+        "family_consistency",
+        "size_compatibility",
+        "checksum_capability",
+        "post_build_diff_scope"
+      ]
+    },
+    "euro2": {
+      "aliases": [
+        "euro2",
+        "euro-2",
+        "e2",
+        "mod e2",
+        "евро2"
+      ],
+      "validation_checks": [
+        "family_consistency",
+        "size_compatibility",
+        "checksum_capability",
+        "post_build_diff_scope"
+      ]
+    }
+  },
+  "next_step": {
+    "name": "family_manifest_builder",
+    "goal": "merge software/ecu/id/bl/hw and checksum readiness into a single canonical table",
+    "target_output": "family_manifest.csv"
+  }
+}
