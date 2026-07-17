@@ -69,6 +69,27 @@ FEATURE_ALIASES: Dict[str, Sequence[str]] = {
     "rt47": ("rt47", "modrt47"),
 }
 
+PATH_BRAND_ALIASES: Dict[str, str] = {
+    "toyota": "TOYOTA",
+    "lexus": "TOYOTA",
+    "haval": "HAVAL",
+    "greatwall": "HAVAL",
+    "great": "HAVAL",
+    "wall": "HAVAL",
+    "wey": "HAVAL",
+    "tank": "HAVAL",
+    "chery": "CHERY",
+    "exeed": "EXEED",
+    "jac": "JAC",
+    "geely": "GEELY",
+    "changan": "CHANGAN",
+    "gac": "GAC",
+    "dongfeng": "DONGFENG",
+    "faw": "FAW",
+    "baic": "BAIC",
+    "saic": "SAIC",
+}
+
 
 def normalize_text(value: str) -> str:
     value = value.lower().replace("_", " ").replace("-", " ")
@@ -105,6 +126,19 @@ def parse_software_candidates(text: str) -> List[str]:
     for pattern in SOFTWARE_PATTERNS:
         values.extend(m.group(0) for m in pattern.finditer(text))
     return sorted({v.upper() for v in values})
+
+
+def parse_brand_hints_from_path(rel_path: str) -> List[str]:
+    lowered = rel_path.lower().replace("\\", "/")
+    chunks = re.split(r"[/_\-\s\.]+", lowered)
+    hints: List[str] = []
+    for chunk in chunks:
+        if not chunk:
+            continue
+        mapped = PATH_BRAND_ALIASES.get(chunk)
+        if mapped:
+            hints.append(mapped)
+    return sorted(set(hints))
 
 
 @dataclass
@@ -162,6 +196,9 @@ def build_records(root: Path, files: Iterable[Path]) -> List[FirmwareRecord]:
         text = normalize_text(name)
         features = infer_features(name)
         role = infer_role(features)
+        brands_name = parse_candidates(BRAND_RE, name)
+        brands_path = parse_brand_hints_from_path(rel)
+        merged_brands = sorted(set(brands_name + brands_path))
         records.append(
             FirmwareRecord(
                 rel_path=rel,
@@ -170,7 +207,7 @@ def build_records(root: Path, files: Iterable[Path]) -> List[FirmwareRecord]:
                 size_bytes=path.stat().st_size,
                 sha256=sha256sum(path),
                 ecu_candidates=parse_candidates(ECU_RE, name),
-                brand_candidates=parse_candidates(BRAND_RE, name),
+                brand_candidates=merged_brands,
                 software_candidates=parse_software_candidates(name),
                 features=features,
                 inferred_role=role,

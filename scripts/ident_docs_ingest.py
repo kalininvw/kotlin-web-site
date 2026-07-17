@@ -69,6 +69,27 @@ SW_KEY_PATTERNS: Sequence[re.Pattern[str]] = (
     re.compile(r"\bSOFTWARE\s*[:=]\s*([A-Z0-9._\-]{4,})", re.IGNORECASE),
 )
 
+PATH_BRAND_ALIASES: Dict[str, str] = {
+    "toyota": "TOYOTA",
+    "lexus": "TOYOTA",
+    "haval": "HAVAL",
+    "greatwall": "HAVAL",
+    "great": "HAVAL",
+    "wall": "HAVAL",
+    "wey": "HAVAL",
+    "tank": "HAVAL",
+    "chery": "CHERY",
+    "exeed": "EXEED",
+    "jac": "JAC",
+    "geely": "GEELY",
+    "changan": "CHANGAN",
+    "gac": "GAC",
+    "dongfeng": "DONGFENG",
+    "faw": "FAW",
+    "baic": "BAIC",
+    "saic": "SAIC",
+}
+
 
 def unique_sorted(values: Iterable[str]) -> List[str]:
     return sorted({value.upper() for value in values if value})
@@ -84,6 +105,19 @@ def parse_by_patterns(text: str, patterns: Sequence[re.Pattern[str]], group: int
 
 def parse_sw_ids(text: str) -> List[str]:
     return parse_by_patterns(text, SW_PATTERNS, 0)
+
+
+def parse_brand_hints_from_path(rel_path: str) -> List[str]:
+    lowered = rel_path.lower().replace("\\", "/")
+    chunks = re.split(r"[/_\-\s\.]+", lowered)
+    hints: List[str] = []
+    for chunk in chunks:
+        if not chunk:
+            continue
+        mapped = PATH_BRAND_ALIASES.get(chunk)
+        if mapped:
+            hints.append(mapped)
+    return unique_sorted(hints)
 
 
 def choose_name_filter(name_mode: str) -> Optional[re.Pattern[str]]:
@@ -112,6 +146,7 @@ class DocRecord:
     hardware_ids: List[str]
     ecu_candidates: List[str]
     brand_candidates: List[str]
+    path_brand_hints: List[str]
 
     def row(self) -> Dict[str, str]:
         return {
@@ -124,6 +159,7 @@ class DocRecord:
             "hardware_ids": "|".join(self.hardware_ids),
             "ecu_candidates": "|".join(self.ecu_candidates),
             "brand_candidates": "|".join(self.brand_candidates),
+            "path_brand_hints": "|".join(self.path_brand_hints),
         }
 
 
@@ -147,16 +183,18 @@ def collect_docs(source: Path, name_mode: str, max_file_size_mb: int) -> List[Pa
 def parse_docs(source: Path, docs: Sequence[Path], max_chars: int) -> List[DocRecord]:
     records: List[DocRecord] = []
     for path in docs:
+        rel_path = str(path.relative_to(source))
+        path_brand_hints = parse_brand_hints_from_path(rel_path)
         text = read_text_limited(path, max_chars=max_chars)
-        merged = "\n".join([path.name, text])
+        merged = "\n".join([rel_path, path.name, text])
         sw_values = unique_sorted(parse_sw_ids(merged) + parse_by_patterns(merged, SW_KEY_PATTERNS, 1))
         bl_values = parse_by_patterns(merged, BL_PATTERNS, 1)
         hw_values = parse_by_patterns(merged, HW_PATTERNS, 1)
         ecus = parse_by_patterns(merged, (ECU_RE,), 0)
-        brands = parse_by_patterns(merged, (BRAND_RE,), 0)
+        brands = unique_sorted(parse_by_patterns(merged, (BRAND_RE,), 0) + path_brand_hints)
         records.append(
             DocRecord(
-                rel_path=str(path.relative_to(source)),
+                rel_path=rel_path,
                 file_name=path.name,
                 extension=path.suffix.lower(),
                 size_bytes=path.stat().st_size,
@@ -165,6 +203,7 @@ def parse_docs(source: Path, docs: Sequence[Path], max_chars: int) -> List[DocRe
                 hardware_ids=hw_values,
                 ecu_candidates=ecus,
                 brand_candidates=brands,
+                path_brand_hints=path_brand_hints,
             )
         )
     return records
@@ -473,6 +512,7 @@ def main() -> None:
             "hardware_ids",
             "ecu_candidates",
             "brand_candidates",
+            "path_brand_hints",
         ],
     )
     write_csv(
