@@ -1,0 +1,66 @@
+Desktop agent handoff — firmware program pipeline
+Date: 2026-07-17
+Source sessions:
+- mobile: https://cursor.com/agents/bc-019f709f-12aa-731c-ae95-5dfeae537c0f
+- follow-up: https://cursor.com/agents/bc-019f722b-e178-7942-a634-a2bcbc3f487e
+Repo: https://github.com/kalininvw/kotlin-web-site
+Merged PR: https://github.com/kalininvw/kotlin-web-site/pull/1
+
+============================================================
+WHAT IS ALREADY IN THIS REPO (pull master)
+============================================================
+Scripts (metadata only — do not rewrite BIN files):
+- scripts/firmware_catalog_ingest.py
+- scripts/ident_docs_ingest.py
+- scripts/stage_core_builder.py
+- scripts/family_manifest_builder.py
+- scripts/safety_precheck_builder.py
+
+Usage notes:
+- uploads/yadisk_ingest_usage.txt
+- uploads/ident_ingest_usage.txt
+- uploads/stage_core_usage.txt
+- uploads/family_manifest_usage.txt
+- uploads/safety_precheck_usage.txt
+
+Demo artifacts already under uploads/*_demo* and related CSVs.
+
+============================================================
+WHAT IS NOT IN GIT (must be local on this PC)
+============================================================
+- Firmware binaries / Yandex Disk sync folder
+- Windows path like Desktop\РЕЗЕРВ or local Yandex.Disk\firmware_base
+Cloud/mobile agents cannot see those paths.
+
+============================================================
+GOAL FOR NEW DESKTOP AGENT
+============================================================
+1) Confirm repo is up to date (master with PR #1).
+2) Locate local firmware source folder on THIS PC.
+3) Run full pipeline against that folder:
+   catalog ingest -> ident ingest -> stage_core -> family_manifest -> safety_precheck
+4) Write outputs under uploads/*_run (not overwrite demos unless asked).
+5) Catalog rules must stay systemic (all brands/models), no brand-only dialog hacks.
+6) Do not invent binary patch algorithms; stay on index/readiness/gates unless owner asks otherwise.
+
+============================================================
+READY PROMPT TO PASTE INTO NEW DESKTOP AGENT
+============================================================
+Продолжи программу прошивок с GitHub (kotlin-web-site, PR #1 уже влит в master).
+
+Контекст handoff: uploads/desktop_agent_handoff.txt
+
+Сделай на ЭТОМ компьютере:
+1. git pull origin master
+2. Найди локальную папку прошивок (Яндекс.Диск / РЕЗЕРВ / firmware_base)
+3. Прогони цепочку:
+   python scripts/firmware_catalog_ingest.py --source "<LOCAL_FIRMWARE_FOLDER>" --out-dir uploads/yadisk_ingest_run
+   python scripts/ident_docs_ingest.py --source "<LOCAL_FIRMWARE_FOLDER>" --out-dir uploads/ident_run --name-mode strict --firmware-index-csv uploads/yadisk_ingest_run/firmware_catalog_index.csv
+   python scripts/stage_core_builder.py --index-csv uploads/yadisk_ingest_run/firmware_catalog_index.csv --out-dir uploads/stage_core_run --ident-priority-csv uploads/ident_run/ident_brand_priority_core_brands.csv
+   python scripts/family_manifest_builder.py --firmware-index-csv uploads/yadisk_ingest_run/firmware_catalog_index.csv --ident-priority-csv uploads/ident_run/ident_brand_priority_core_brands.csv --stage-families-csv uploads/stage_core_run/stage_core_families.csv --out-dir uploads/family_manifest_run
+   python scripts/safety_precheck_builder.py (по uploads/safety_precheck_usage.txt, на свежий manifest)
+4. Покажи пути к результатам и краткий summary.
+5. Правила каталога — системные на весь каталог брендов, без JAC/Haval/Chery-only хаков.
+6. BIN не модифицировать.
+
+Если локальную папку прошивок не найдёшь — остановись и спроси точный путь.
