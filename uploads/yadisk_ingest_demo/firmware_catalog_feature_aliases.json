@@ -1,0 +1,47 @@
+{
+  "normalization": {
+    "lowercase": true,
+    "replace_dash_underscore": true,
+    "collapse_spaces": true
+  },
+  "feature_aliases": {
+    "stage1": [
+      "stage1",
+      "stage 1",
+      "st1",
+      "tune1",
+      "rt47 stage1",
+      "modrt47 stage1"
+    ],
+    "euro2": [
+      "euro2",
+      "euro 2",
+      "euro-2",
+      "евро2",
+      "евро 2",
+      "e2",
+      "mod e2"
+    ],
+    "stock": [
+      "stock",
+      "stok",
+      "сток",
+      "ori",
+      "original"
+    ],
+    "mod": [
+      "mod",
+      "modified",
+      "тюнинг",
+      "tuned"
+    ],
+    "rt47": [
+      "rt47",
+      "modrt47"
+    ]
+  },
+  "notes": [
+    "Systemic aliases; do not create brand-specific dialog hacks.",
+    "This file classifies labels only and does not implement binary patching."
+  ]
+}
