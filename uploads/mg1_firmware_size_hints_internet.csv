@@ -1,0 +1,7 @@
+ecu,mcu,size_mb,size_bytes,brand_example,source_url
+MG1UA008,SPC574,2.5,2621440,Great Wall/Haval,https://bitsoftware.com/bitbox/catalog/79
+MG1US008,TC277,4.0,4194304,Great Wall/Haval,https://bitsoftware.com/bitbox/catalog/79
+MG1US708,TC387QP,10.0,10485760,Geely/Lynk&Co,https://bitsoftware.com/bitbox/catalog/79
+MG1UA008,SPC574,2.5,2621440,Great Wall/Haval,https://ecutools.eu/chip-tuning/bitbox/china-petrol-mg1-petrol/
+MG1US008,TC277,4.0,4194304,Great Wall/Haval,https://ecutools.eu/chip-tuning/bitbox/china-petrol-mg1-petrol/
+MG1UA008/MG1US008,,2.5|4.0,2621440|4194304,China market set,https://bitsoftware.com/bitedit/catalog/104

@@ -80,5 +80,44 @@
   "evidence": {
     "mg1_rows_found": 2,
     "rt47_rows_found_in_price": 0
+  },
+  "firmware_size_hints_internet": {
+    "sources": [
+      "https://bitsoftware.com/bitbox/catalog/79",
+      "https://ecutools.eu/chip-tuning/bitbox/china-petrol-mg1-petrol/",
+      "https://bitsoftware.com/bitedit/catalog/104"
+    ],
+    "MG1UA008": {
+      "mcu": "SPC574",
+      "size_mb": 2.5,
+      "size_bytes": 2621440,
+      "brand_examples": [
+        "Great Wall/Haval",
+        "Chery/Jetour",
+        "JAC/Geely/Changan"
+      ],
+      "confidence": "high"
+    },
+    "MG1US008": {
+      "mcu": "TC277",
+      "size_mb": 4.0,
+      "size_bytes": 4194304,
+      "brand_examples": [
+        "Great Wall/Haval",
+        "Chery/Exeed",
+        "BAIC/SAIC"
+      ],
+      "confidence": "high"
+    },
+    "MG1US708": {
+      "mcu": "TC387QP",
+      "size_mb": 10.0,
+      "size_bytes": 10485760,
+      "brand_examples": [
+        "Geely/Lynk&Co"
+      ],
+      "confidence": "high"
+    },
+    "module_level_note": "BitEdit China Bosch MG1 module explicitly states support for files 2.5Mb and 4Mb size."
   }
 }
