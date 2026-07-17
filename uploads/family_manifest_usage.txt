@@ -7,7 +7,7 @@ Goal:
 Run:
   python3 /workspace/scripts/family_manifest_builder.py \
     --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
-    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv" \
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv" \
     --stage-families-csv "/workspace/uploads/stage_core_run/stage_core_families.csv" \
     --out-dir "/workspace/uploads/family_manifest_run"
 
@@ -15,6 +15,8 @@ Outputs:
 - family_manifest.csv
 - family_manifest_toyota.csv
 - family_manifest_haval.csv
+- family_manifest_kia.csv
+- family_manifest_hyundai.csv
 - family_manifest_summary.txt
 - checksum_capability_registry_v1.json
 

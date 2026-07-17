@@ -49,13 +49,14 @@ SOFTWARE_PATTERNS: Sequence[re.Pattern[str]] = (
 ECU_RE = re.compile(
     r"(?<![A-Z0-9])("
     r"MG1US008|MG1UA008|MG1US708|ME17\.8\.10|ME17\.8\.8|ME17U6|MED17\.8\.10|"
+    r"ME17\.9\.11|ME17\.9\.12|ME17\.9\.13|ME17\.9\.21|"
     r"MT20U|MT22(?:\.1|U)?|MT92(?:\.1)?|DCM\s*7\.1AP|EDC17[ACP0-9]*"
     r")(?![A-Z0-9])",
     re.IGNORECASE,
 )
 BRAND_RE = re.compile(
     r"(?<![A-Z0-9])("
-    r"HAVAL|GREAT[-_\s]?WALL|CHERY|EXEED|JAC|GEELY|CHANGAN|GAC|DONGFENG|FAW|BAIC|SAIC|WEY|TANK"
+    r"HAVAL|GREAT[-_\s]?WALL|CHERY|EXEED|JAC|GEELY|CHANGAN|GAC|DONGFENG|FAW|BAIC|SAIC|WEY|TANK|KIA|HYUNDAI"
     r")(?![A-Z0-9])",
     re.IGNORECASE,
 )
@@ -88,6 +89,8 @@ PATH_BRAND_ALIASES: Dict[str, str] = {
     "faw": "FAW",
     "baic": "BAIC",
     "saic": "SAIC",
+    "kia": "KIA",
+    "hyundai": "HYUNDAI",
 }
 
 

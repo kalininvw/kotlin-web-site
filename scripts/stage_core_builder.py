@@ -357,7 +357,7 @@ def main() -> None:
     parser.add_argument(
         "--ident-priority-csv",
         default="",
-        help="Optional ident_brand_priority_toyota_haval.csv for roadmap merge.",
+        help="Optional ident_brand_priority_core_brands.csv for roadmap merge.",
     )
     args = parser.parse_args()
 

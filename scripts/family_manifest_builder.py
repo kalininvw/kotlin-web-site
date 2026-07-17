@@ -249,6 +249,10 @@ def canonical_brand(target_brand: str, brands: Iterable[str]) -> str:
         return "TOYOTA"
     if "HAVAL" in upper or "GREAT WALL" in upper or "WEY" in upper or "TANK" in upper:
         return "HAVAL"
+    if "KIA" in upper:
+        return "KIA"
+    if "HYUNDAI" in upper:
+        return "HYUNDAI"
     if upper:
         return sorted(upper)[0]
     return "UNKNOWN"
@@ -472,6 +476,8 @@ def main() -> None:
     manifest_csv = out_dir / "family_manifest.csv"
     toyota_csv = out_dir / "family_manifest_toyota.csv"
     haval_csv = out_dir / "family_manifest_haval.csv"
+    kia_csv = out_dir / "family_manifest_kia.csv"
+    hyundai_csv = out_dir / "family_manifest_hyundai.csv"
     summary_txt = out_dir / "family_manifest_summary.txt"
 
     fields = [
@@ -504,12 +510,16 @@ def main() -> None:
     write_csv(manifest_csv, rows, fields)
     write_csv(toyota_csv, [row for row in rows if row.get("target_brand") == "TOYOTA"], fields)
     write_csv(haval_csv, [row for row in rows if row.get("target_brand") == "HAVAL"], fields)
+    write_csv(kia_csv, [row for row in rows if row.get("target_brand") == "KIA"], fields)
+    write_csv(hyundai_csv, [row for row in rows if row.get("target_brand") == "HYUNDAI"], fields)
     write_summary(summary_txt, rows)
 
     print(f"rows_total={len(rows)}")
     print(f"written={manifest_csv}")
     print(f"written={toyota_csv}")
     print(f"written={haval_csv}")
+    print(f"written={kia_csv}")
+    print(f"written={hyundai_csv}")
     print(f"written={summary_txt}")
     print(f"written={checksum_registry_json}")
 

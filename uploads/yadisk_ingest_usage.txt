@@ -15,7 +15,7 @@ Yandex Disk ingest usage (local folder sync)
    - firmware_catalog_ingest_summary.txt
 
 4) Next recommended steps:
-   - Identification docs ingest (Toyota/Haval priority):
+  - Identification docs ingest (core brand priority: Toyota/Haval/Kia/Hyundai):
      python3 /workspace/scripts/ident_docs_ingest.py \
        --source "/home/ubuntu/Yandex.Disk/firmware_base" \
        --out-dir "/workspace/uploads/ident_run" \
@@ -25,7 +25,7 @@ Yandex Disk ingest usage (local folder sync)
      python3 /workspace/scripts/stage_core_builder.py \
        --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
        --out-dir "/workspace/uploads/stage_core_run" \
-       --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv"
+      --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv"
 
 Notes:
 - The script only indexes metadata; it does not change firmware files.

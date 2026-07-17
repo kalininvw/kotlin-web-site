@@ -1,0 +1,12 @@
+Core target queue seed for Kia/Hyundai ME17 family.
+
+brand: KIA
+brand: HYUNDAI
+
+ecu: ME17.9.11
+ecu: ME17.9.12
+ecu: ME17.9.13
+ecu: ME17.9.21
+
+stage1: planned
+euro2: planned

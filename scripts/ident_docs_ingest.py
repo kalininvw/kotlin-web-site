@@ -34,13 +34,14 @@ DOC_NAME_RELAXED_RE = re.compile(r"(id|ident|sw|bl|hw|ecu)", re.IGNORECASE)
 
 BRAND_RE = re.compile(
     r"(?<![A-Z0-9])("
-    r"TOYOTA|LEXUS|HAVAL|GREAT[-_\s]?WALL|WEY|TANK|CHERY|EXEED|JAC|GEELY|CHANGAN|GAC|DONGFENG|FAW|BAIC|SAIC"
+    r"TOYOTA|LEXUS|HAVAL|GREAT[-_\s]?WALL|WEY|TANK|CHERY|EXEED|JAC|GEELY|CHANGAN|GAC|DONGFENG|FAW|BAIC|SAIC|KIA|HYUNDAI"
     r")(?![A-Z0-9])",
     re.IGNORECASE,
 )
 ECU_RE = re.compile(
     r"(?<![A-Z0-9])("
     r"MG1US008|MG1UA008|MG1US708|ME17\.8\.10|ME17\.8\.8|ME17U6|MED17\.8\.10|"
+    r"ME17\.9\.11|ME17\.9\.12|ME17\.9\.13|ME17\.9\.21|"
     r"MT20U|MT22(?:\.1|U)?|MT92(?:\.1)?|DCM\s*7\.1AP|EDC17[ACP0-9]*"
     r")(?![A-Z0-9])",
     re.IGNORECASE,
@@ -88,6 +89,8 @@ PATH_BRAND_ALIASES: Dict[str, str] = {
     "faw": "FAW",
     "baic": "BAIC",
     "saic": "SAIC",
+    "kia": "KIA",
+    "hyundai": "HYUNDAI",
 }
 
 
@@ -319,7 +322,10 @@ def infer_brand_priorities(sw: str, brands: Set[str], ecus: Set[str]) -> List[Tu
     upper_brands = {brand.upper().replace("_", " ").replace("-", " ").strip() for brand in brands}
     has_toyota = bool({"TOYOTA", "LEXUS"} & upper_brands)
     has_haval = bool({"HAVAL", "GREAT WALL", "WEY", "TANK"} & upper_brands)
+    has_kia = "KIA" in upper_brands
+    has_hyundai = "HYUNDAI" in upper_brands
     has_mg1u = any(ecu.startswith("MG1U") for ecu in ecus)
+    has_me179 = any(ecu in {"ME17.9.11", "ME17.9.12", "ME17.9.13", "ME17.9.21"} for ecu in ecus)
     multi_brand_catalog = len(upper_brands) >= 8
 
     priorities: List[Tuple[str, str]] = []
@@ -333,9 +339,16 @@ def infer_brand_priorities(sw: str, brands: Set[str], ecus: Set[str]) -> List[Tu
             priorities.append(("TOYOTA", "brand_explicit"))
         if has_haval:
             priorities.append(("HAVAL", "brand_explicit"))
+        if has_kia:
+            priorities.append(("KIA", "brand_explicit"))
+        if has_hyundai:
+            priorities.append(("HYUNDAI", "brand_explicit"))
 
     if not priorities and has_mg1u:
         priorities.append(("HAVAL", "ecu_family_heuristic"))
+    if not priorities and has_me179:
+        priorities.append(("KIA", "ecu_family_shared_heuristic"))
+        priorities.append(("HYUNDAI", "ecu_family_shared_heuristic"))
 
     if not priorities:
         priorities.append(("OTHER", "insufficient_brand_data"))
@@ -350,11 +363,13 @@ def infer_brand_priorities(sw: str, brands: Set[str], ecus: Set[str]) -> List[Tu
 
 
 def build_priority_rows(family_rows: Sequence[Dict[str, str]]) -> List[Dict[str, str]]:
+    target_brands = {"TOYOTA", "HAVAL", "KIA", "HYUNDAI"}
     source_rank = {
         "brand_explicit": 1,
         "software_prefix_heuristic": 2,
         "multi_brand_catalog_ecu_heuristic": 3,
         "ecu_family_heuristic": 4,
+        "ecu_family_shared_heuristic": 4,
         "insufficient_brand_data": 99,
     }
     rows: List[Dict[str, str]] = []
@@ -365,7 +380,7 @@ def build_priority_rows(family_rows: Sequence[Dict[str, str]]) -> List[Dict[str,
         targets = infer_brand_priorities(software_id, brands, ecus)
         best_by_target: Dict[str, str] = {}
         for target_brand, source in targets:
-            if target_brand not in {"TOYOTA", "HAVAL"}:
+            if target_brand not in target_brands:
                 continue
             current = best_by_target.get(target_brand)
             if current is None or source_rank.get(source, 50) < source_rank.get(current, 50):
@@ -376,11 +391,26 @@ def build_priority_rows(family_rows: Sequence[Dict[str, str]]) -> List[Dict[str,
                     continue
             if target_brand == "TOYOTA":
                 sw_upper = software_id.upper()
+                ecus_upper = {v.upper() for v in ecus}
+                me179_ecus = {"ME17.9.11", "ME17.9.12", "ME17.9.13", "ME17.9.21"}
+                # Guard against cross-brand contamination: ME17.9.x families should not
+                # be routed to Toyota without Toyota SW evidence.
+                if ecus_upper and ecus_upper.issubset(me179_ecus) and not (
+                    sw_upper.startswith("89663-") or sw_upper.startswith("89661-")
+                ):
+                    continue
                 if not (
                     sw_upper.startswith("89663-")
                     or sw_upper.startswith("89661-")
                     or "TOYOTA" in {v.upper() for v in brands}
                     or "LEXUS" in {v.upper() for v in brands}
+                ):
+                    continue
+            if target_brand in {"KIA", "HYUNDAI"}:
+                ecus_upper = {v.upper() for v in ecus}
+                if not (
+                    target_brand in {v.upper() for v in brands}
+                    or {"ME17.9.11", "ME17.9.12", "ME17.9.13", "ME17.9.21"} & ecus_upper
                 ):
                     continue
             rows.append(
@@ -430,6 +460,8 @@ def write_summary(
 ) -> None:
     toyota = sum(1 for item in priority_rows if item["target_brand"] == "TOYOTA")
     haval = sum(1 for item in priority_rows if item["target_brand"] == "HAVAL")
+    kia = sum(1 for item in priority_rows if item["target_brand"] == "KIA")
+    hyundai = sum(1 for item in priority_rows if item["target_brand"] == "HYUNDAI")
     lines = [
         "Identification docs ingest summary",
         f"source_root={source}",
@@ -437,6 +469,8 @@ def write_summary(
         f"software_families={len(family_rows)}",
         f"priority_toyota={toyota}",
         f"priority_haval={haval}",
+        f"priority_kia={kia}",
+        f"priority_hyundai={hyundai}",
     ]
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -492,9 +526,12 @@ def main() -> None:
 
     docs_csv = out_dir / "ident_docs_index.csv"
     family_csv = out_dir / "ident_family_hints.csv"
-    priority_csv = out_dir / "ident_brand_priority_toyota_haval.csv"
+    priority_csv = out_dir / "ident_brand_priority_core_brands.csv"
+    priority_legacy_csv = out_dir / "ident_brand_priority_toyota_haval.csv"
     priority_toyota_csv = out_dir / "ident_priority_toyota.csv"
     priority_haval_csv = out_dir / "ident_priority_haval.csv"
+    priority_kia_csv = out_dir / "ident_priority_kia.csv"
+    priority_hyundai_csv = out_dir / "ident_priority_hyundai.csv"
     entities_csv = out_dir / "ident_entities_flat.csv"
     summary_txt = out_dir / "ident_ingest_summary.txt"
     config_json = out_dir / "ident_ingest_config.json"
@@ -536,6 +573,27 @@ def main() -> None:
     )
     write_csv(
         priority_csv,
+        priority_rows,
+        [
+            "target_brand",
+            "priority_source",
+            "family_key",
+            "family_type",
+            "software_id",
+            "ecu_primary",
+            "ecu_candidates",
+            "brand_candidates",
+            "bootloader_ids",
+            "hardware_ids",
+            "firmware_features",
+            "firmware_roles",
+            "firmware_file_count",
+            "doc_count",
+            "next_action",
+        ],
+    )
+    write_csv(
+        priority_legacy_csv,
         priority_rows,
         [
             "target_brand",
@@ -598,6 +656,48 @@ def main() -> None:
         ],
     )
     write_csv(
+        priority_kia_csv,
+        [row for row in priority_rows if row.get("target_brand") == "KIA"],
+        [
+            "target_brand",
+            "priority_source",
+            "family_key",
+            "family_type",
+            "software_id",
+            "ecu_primary",
+            "ecu_candidates",
+            "brand_candidates",
+            "bootloader_ids",
+            "hardware_ids",
+            "firmware_features",
+            "firmware_roles",
+            "firmware_file_count",
+            "doc_count",
+            "next_action",
+        ],
+    )
+    write_csv(
+        priority_hyundai_csv,
+        [row for row in priority_rows if row.get("target_brand") == "HYUNDAI"],
+        [
+            "target_brand",
+            "priority_source",
+            "family_key",
+            "family_type",
+            "software_id",
+            "ecu_primary",
+            "ecu_candidates",
+            "brand_candidates",
+            "bootloader_ids",
+            "hardware_ids",
+            "firmware_features",
+            "firmware_roles",
+            "firmware_file_count",
+            "doc_count",
+            "next_action",
+        ],
+    )
+    write_csv(
         entities_csv,
         entities_rows,
         ["entity_type", "value", "rel_path"],
@@ -611,7 +711,8 @@ def main() -> None:
                 "max_chars": args.max_chars,
                 "notes": [
                     "Read-only source processing.",
-                    "Toyota/Haval priority list is based on explicit brand match first, then heuristics.",
+                    "Core brand priority list includes Toyota/Haval/Kia/Hyundai.",
+                    "ME17.9.11/12/13/21 families can be routed to Kia/Hyundai via explicit tags or ECU-family heuristic.",
                 ],
             },
             ensure_ascii=False,
@@ -627,8 +728,11 @@ def main() -> None:
     print(f"written={docs_csv}")
     print(f"written={family_csv}")
     print(f"written={priority_csv}")
+    print(f"written={priority_legacy_csv}")
     print(f"written={priority_toyota_csv}")
     print(f"written={priority_haval_csv}")
+    print(f"written={priority_kia_csv}")
+    print(f"written={priority_hyundai_csv}")
     print(f"written={entities_csv}")
     print(f"written={summary_txt}")
     print(f"written={config_json}")

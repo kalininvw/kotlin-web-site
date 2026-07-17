@@ -10,11 +10,11 @@ Stage core preparation usage
      --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
      --out-dir "/workspace/uploads/stage_core_run"
 
-2b) Build Stage1 core with Toyota/Haval identification priority merge:
+2b) Build Stage1 core with core-brand identification priority merge:
    python3 /workspace/scripts/stage_core_builder.py \
      --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
      --out-dir "/workspace/uploads/stage_core_run" \
-     --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv"
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv"
 
 3) Stage core output:
    - stage_core_families.csv
@@ -32,6 +32,6 @@ Notes:
 4) Build unified family safety manifest:
    python3 /workspace/scripts/family_manifest_builder.py \
      --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
-     --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv" \
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv" \
      --stage-families-csv "/workspace/uploads/stage_core_run/stage_core_families.csv" \
      --out-dir "/workspace/uploads/family_manifest_run"

@@ -2,7 +2,7 @@ Identification docs ingest usage (id / bl / sw)
 
 Goal:
 - Extract known identifiers from text documents and build family hints.
-- Prioritize Toyota and Haval tracks for Stage1 core preparation.
+- Prioritize core brand tracks (Toyota, Haval, Kia, Hyundai) for Stage1 core preparation.
 
 Run (strict filename filter: id/bl/sw/ident):
   python3 /workspace/scripts/ident_docs_ingest.py \
@@ -21,13 +21,17 @@ Run (all text files in folder):
 Outputs:
 - ident_docs_index.csv
 - ident_family_hints.csv
-- ident_brand_priority_toyota_haval.csv
+- ident_brand_priority_core_brands.csv
+- ident_brand_priority_toyota_haval.csv (legacy alias, same content)
 - ident_priority_toyota.csv
 - ident_priority_haval.csv
+- ident_priority_kia.csv
+- ident_priority_hyundai.csv
 - ident_entities_flat.csv
 - ident_ingest_summary.txt
 - ident_ingest_config.json
 
 Notes:
 - Source folder is read-only for this workflow.
-- Priority list is systemic and catalog-wide, with Toyota/Haval first.
+- Priority list is systemic and catalog-wide (Toyota/Haval/Kia/Hyundai).
+- ME17.9.11 / ME17.9.12 / ME17.9.13 / ME17.9.21 families can be routed to Kia/Hyundai via explicit tags or ECU-family heuristic.
