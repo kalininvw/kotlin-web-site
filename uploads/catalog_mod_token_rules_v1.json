@@ -85,7 +85,8 @@
     "sources": [
       "https://bitsoftware.com/bitbox/catalog/79",
       "https://ecutools.eu/chip-tuning/bitbox/china-petrol-mg1-petrol/",
-      "https://bitsoftware.com/bitedit/catalog/104"
+      "https://bitsoftware.com/bitedit/catalog/104",
+      "https://rt47.ru/"
     ],
     "MG1UA008": {
       "mcu": "SPC574",
@@ -118,6 +119,21 @@
       ],
       "confidence": "high"
     },
-    "module_level_note": "BitEdit China Bosch MG1 module explicitly states support for files 2.5Mb and 4Mb size."
+    "module_level_note": "BitEdit China Bosch MG1 module explicitly states support for files 2.5Mb and 4Mb size.",
+    "rt47_probe": {
+      "checked_pages": [
+        "https://rt47.ru/bosch-mg1ua008-1350",
+        "https://rt47.ru/bosch-mg1ua008-2400",
+        "https://rt47.ru/bosch-mg1us008-1668",
+        "https://rt47.ru/bosch-mg1us008-2450",
+        "https://rt47.ru/bosch-mg1us008-2561",
+        "https://rt47.ru/bosch-mg1us008-2588",
+        "https://rt47.ru/bosch-mg1us008-938",
+        "https://rt47.ru/bosch-mg1us008-954",
+        "https://rt47.ru/bosch-mg1us008-980"
+      ],
+      "explicit_size_mentions_found": 0,
+      "note": "Public RT47 MG1 pages list ECU/vehicles/software identifiers, but do not expose explicit file size values in MB/bytes."
+    }
   }
 }

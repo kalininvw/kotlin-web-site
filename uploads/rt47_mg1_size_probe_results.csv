@@ -1,0 +1,10 @@
+url,status_code,html_bytes,contains_size_token,contains_haval_or_greatwall,comment
+https://rt47.ru/bosch-mg1ua008-1350,200,61511,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1ua008-2400,200,59049,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-1668,200,61882,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-2450,200,60807,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-2561,200,59383,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-2588,200,61504,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-938,200,62519,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-954,200,61953,false,true,no_explicit_size_mb_or_bytes_in_page
+https://rt47.ru/bosch-mg1us008-980,200,62026,false,true,no_explicit_size_mb_or_bytes_in_page
