@@ -1,0 +1,14 @@
+target_brand,priority_source,family_key,software_id,ecu_primary,matched_stage_family,match_type,readiness_status,readiness_score,target_operations,default_operation,stage1_ready,euro2_ready,recommended_action
+TOYOTA,brand_explicit,SW:89663-F0N05,89663-F0N05,,SW:89663-F0N05,software_id,ready_for_template,95,stage1|euro2,euro2,true,true,prepare_map-template-and-validation-checklist
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:DCM 7.1AP,,DCM 7.1AP,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:DCM7.1AP,,DCM7.1AP,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:EDC17C53,,EDC17C53,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:EDC17C81,,EDC17C81,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:ME17.8.8,,ME17.8.8,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:ME17U6,,ME17U6,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MED17.8.10,,MED17.8.10,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MG1UA008,,MG1UA008,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MG1US008,,MG1US008,SW:F01R00DU8DUP8,ecu_primary,ready_for_template,75,stage1|euro2,stage1,true,true,prepare_map-template-and-validation-checklist
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MT20U,,MT20U,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MT22.1,,MT22.1,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs
+HAVAL,multi_brand_catalog_ecu_heuristic,ECU:MT92,,MT92,,,needs_data,0,stage1|euro2,euro2,false,false,collect-stock-mod-pair-and-ident-docs

@@ -1,0 +1,37 @@
+Stage core preparation usage
+
+1) Build normalized index from synced Yandex Disk folder:
+   python3 /workspace/scripts/firmware_catalog_ingest.py \
+     --source "/home/ubuntu/Yandex.Disk/firmware_base" \
+     --out-dir "/workspace/uploads/yadisk_ingest_run"
+
+2) Build Stage1 core preparation artifacts:
+   python3 /workspace/scripts/stage_core_builder.py \
+     --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+     --out-dir "/workspace/uploads/stage_core_run"
+
+2b) Build Stage1 core with core-brand identification priority merge:
+   python3 /workspace/scripts/stage_core_builder.py \
+     --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+     --out-dir "/workspace/uploads/stage_core_run" \
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv"
+
+3) Stage core output:
+   - stage_core_families.csv
+   - stage_core_backlog.csv
+   - stage_core_operation_profiles.json
+   - stage_core_operation_matrix.csv
+   - stage_core_euro2_queue.csv
+   - stage_core_summary.txt
+   - stage_core_brand_roadmap.csv (when --ident-priority-csv is provided)
+
+Notes:
+- This step prepares family readiness and operation templates only.
+- Binary transformation logic must be implemented as a separate module.
+
+4) Build unified family safety manifest:
+   python3 /workspace/scripts/family_manifest_builder.py \
+     --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv" \
+     --stage-families-csv "/workspace/uploads/stage_core_run/stage_core_families.csv" \
+     --out-dir "/workspace/uploads/family_manifest_run"

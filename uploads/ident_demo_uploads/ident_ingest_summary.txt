@@ -1,0 +1,6 @@
+Identification docs ingest summary
+source_root=/home/ubuntu/.cursor/projects/workspace/uploads
+docs_indexed=6
+software_families=1
+priority_toyota=1
+priority_haval=0

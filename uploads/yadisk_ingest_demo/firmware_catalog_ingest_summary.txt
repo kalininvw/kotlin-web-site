@@ -1,0 +1,15 @@
+Firmware catalog ingest summary
+source_root=/home/ubuntu/.cursor/projects/workspace/uploads
+files_indexed=10
+candidate_stock_mod_pairs=2
+role_counts:
+  modified: 8
+  stock_inferred: 1
+  unknown: 1
+top_ecu_candidates:
+  MG1US008: 6
+feature_counts:
+  mod: 8
+  rt47: 6
+  stage1: 6
+  euro2: 2

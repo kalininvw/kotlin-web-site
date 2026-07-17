@@ -1,0 +1,7 @@
+MG1 price hint summary (local disk only)
+source=/workspace/ffffff_price.html
+mg1_rows=2
+rt47_rows_in_price=0
+rows:
+- КИТАЙ CHINA | Бензин | MG1UA008 | 1000 | Stage1, Euro-2, Euro-0, Misf, Evap, Stock
+- КИТАЙ CHINA | Бензин | MG1US008 | 1000 | Stage1, Euro-2, Euro-0, Misf, Evap, Stock

@@ -1,0 +1,7 @@
+Stage core builder summary
+families_total=2
+readiness_status_counts:
+  ready_for_template: 2
+top_families_by_readiness:
+  SW:89663-F0N05 | score=95 | status=ready_for_template | files=4
+  SW:F01R00DU8DUP8 | score=75 | status=ready_for_template | files=6

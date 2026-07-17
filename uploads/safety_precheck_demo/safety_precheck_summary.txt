@@ -1,0 +1,5 @@
+Safety precheck summary
+manifest_rows=13
+precheck_tasks_raw=25
+precheck_tasks_deduplicated=3
+controlled_build_queue=0

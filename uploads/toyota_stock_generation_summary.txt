@@ -1,0 +1,15 @@
+Toyota generation mapping summary
+total_ids=4467
+with_cpu=2238
+with_fetch_error=0
+generation_counts
+  Gen1: 1898
+  Unknown: 2217
+  Gen2: 352
+confidence_counts
+  high: 2180
+  unknown: 2217
+  low: 70
+89663-F0N05-: Unknown (unknown, insufficient-data), cpu=''
+89663-60201-: Gen1 (high, cpu), cpu='76F0023GD 32B384K 151808-8000'
+89663-F0442-: Gen2 (high, cpu), cpu='D76F0219F1 (2Mb)'

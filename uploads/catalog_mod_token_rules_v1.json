@@ -1,0 +1,139 @@
+{
+  "version": "v1",
+  "scope": "systemic-catalog-rules",
+  "source": "local-price-hint-only",
+  "notes": [
+    "Rules classify request labels, not binary patch logic.",
+    "Apply to all brands/models by token normalization."
+  ],
+  "normalization": {
+    "lowercase": true,
+    "trim_spaces": true,
+    "dash_unify": [
+      "-",
+      "_",
+      " "
+    ],
+    "keep_alnum": true
+  },
+  "feature_aliases": {
+    "stage1": [
+      "stage1",
+      "stage 1",
+      "st1",
+      "tune1",
+      "modrt47 stage1",
+      "rt47 stage1"
+    ],
+    "euro2": [
+      "euro2",
+      "euro 2",
+      "euro-2",
+      "евро2",
+      "евро 2",
+      "e2",
+      "mod e2"
+    ],
+    "stock": [
+      "stock",
+      "stok",
+      "сток"
+    ],
+    "misfire": [
+      "misf",
+      "misfire",
+      "пропуски"
+    ],
+    "evap": [
+      "evap",
+      "адсорбер"
+    ]
+  },
+  "price_hint_mg1": {
+    "MG1UA008": {
+      "price_credits": "1000",
+      "capabilities": [
+        "Stage1",
+        "Euro-2",
+        "Euro-0",
+        "Misf",
+        "Evap",
+        "Stock"
+      ],
+      "brand_bucket": "КИТАЙ CHINA",
+      "engine_type": "Бензин"
+    },
+    "MG1US008": {
+      "price_credits": "1000",
+      "capabilities": [
+        "Stage1",
+        "Euro-2",
+        "Euro-0",
+        "Misf",
+        "Evap",
+        "Stock"
+      ],
+      "brand_bucket": "КИТАЙ CHINA",
+      "engine_type": "Бензин"
+    }
+  },
+  "evidence": {
+    "mg1_rows_found": 2,
+    "rt47_rows_found_in_price": 0
+  },
+  "firmware_size_hints_internet": {
+    "sources": [
+      "https://bitsoftware.com/bitbox/catalog/79",
+      "https://ecutools.eu/chip-tuning/bitbox/china-petrol-mg1-petrol/",
+      "https://bitsoftware.com/bitedit/catalog/104",
+      "https://rt47.ru/"
+    ],
+    "MG1UA008": {
+      "mcu": "SPC574",
+      "size_mb": 2.5,
+      "size_bytes": 2621440,
+      "brand_examples": [
+        "Great Wall/Haval",
+        "Chery/Jetour",
+        "JAC/Geely/Changan"
+      ],
+      "confidence": "high"
+    },
+    "MG1US008": {
+      "mcu": "TC277",
+      "size_mb": 4.0,
+      "size_bytes": 4194304,
+      "brand_examples": [
+        "Great Wall/Haval",
+        "Chery/Exeed",
+        "BAIC/SAIC"
+      ],
+      "confidence": "high"
+    },
+    "MG1US708": {
+      "mcu": "TC387QP",
+      "size_mb": 10.0,
+      "size_bytes": 10485760,
+      "brand_examples": [
+        "Geely/Lynk&Co"
+      ],
+      "confidence": "high"
+    },
+    "module_level_note": "BitEdit China Bosch MG1 module explicitly states support for files 2.5Mb and 4Mb size.",
+    "rt47_probe": {
+      "checked_pages": [
+        "https://rt47.ru/bosch-mg1ua008-1350",
+        "https://rt47.ru/bosch-mg1ua008-2400",
+        "https://rt47.ru/bosch-mg1us008-1668",
+        "https://rt47.ru/bosch-mg1us008-2450",
+        "https://rt47.ru/bosch-mg1us008-2561",
+        "https://rt47.ru/bosch-mg1us008-2588",
+        "https://rt47.ru/bosch-mg1us008-938",
+        "https://rt47.ru/bosch-mg1us008-954",
+        "https://rt47.ru/bosch-mg1us008-980"
+      ],
+      "explicit_size_mentions_found": 0,
+      "note": "Public RT47 MG1 pages list ECU/vehicles/software identifiers, but do not expose explicit file size values in MB/bytes."
+    }
+  }
+}

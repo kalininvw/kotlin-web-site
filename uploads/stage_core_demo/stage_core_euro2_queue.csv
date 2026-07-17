@@ -1,0 +1,3 @@
+family_key,software_id,ecu_primary,readiness_status,readiness_score,has_stage1_signal,has_euro2_signal,stage1_ready,euro2_ready,target_operations,default_operation,recommended_action
+SW:89663-F0N05,89663-F0N05,,ready_for_template,95,false,true,true,true,stage1|euro2,euro2,prepare_map-template-and-validation-checklist
+SW:F01R00DU8DUP8,F01R00DU8DUP8,MG1US008,ready_for_template,75,true,false,true,true,stage1|euro2,stage1,prepare_map-template-and-validation-checklist

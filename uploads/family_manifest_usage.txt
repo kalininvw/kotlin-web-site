@@ -1,0 +1,34 @@
+Family manifest builder usage (safety-gate first)
+
+Goal:
+- Merge firmware index + ident priority + stage readiness into a single control table.
+- Enforce conservative safety gates before any build/write workflow.
+
+Run:
+  python3 /workspace/scripts/family_manifest_builder.py \
+    --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+    --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv" \
+    --stage-families-csv "/workspace/uploads/stage_core_run/stage_core_families.csv" \
+    --out-dir "/workspace/uploads/family_manifest_run"
+
+Outputs:
+- family_manifest.csv
+- family_manifest_toyota.csv
+- family_manifest_haval.csv
+- family_manifest_kia.csv
+- family_manifest_hyundai.csv
+- family_manifest_summary.txt
+- checksum_capability_registry_v1.json
+
+Safety logic:
+- BLOCKED:
+  missing stock or modified reference.
+- PRECHECK_REQUIRED:
+  checksum not project-verified.
+- READY_FOR_CONTROLLED_BUILD:
+  only when no blockers remain.
+
+Next step:
+  python3 /workspace/scripts/safety_precheck_builder.py \
+    --manifest-csv "/workspace/uploads/family_manifest_run/family_manifest.csv" \
+    --out-dir "/workspace/uploads/safety_precheck_run"

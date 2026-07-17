@@ -1,0 +1,21 @@
+Family manifest summary
+rows_total=13
+gate_counts:
+  BLOCKED: 12
+  PRECHECK_REQUIRED: 1
+brand_counts:
+  HAVAL: 12
+  TOYOTA: 1
+high_risk_families:
+  HAVAL | ECU:DCM 7.1AP | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:DCM7.1AP | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:EDC17C53 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:EDC17C81 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:ME17.8.8 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:ME17U6 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MED17.8.10 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MG1UA008 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MG1US008 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MT20U | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MT22.1 | blockers=missing_stock_reference|checksum_not_verified:conditional_support
+  HAVAL | ECU:MT92 | blockers=missing_stock_reference|checksum_not_verified:conditional_support

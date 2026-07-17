@@ -1,0 +1,8 @@
+entity_type,value,rel_path
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_cluster_summary.txt
+brand,TOYOTA,89663-F0N05_vs_MOD_E2_cluster_summary.txt
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_clusters_gap16.csv
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_clusters_gap256.csv
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_clusters_gap64.csv
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_diff_table.csv
+software_id,89663-F0N05,89663-F0N05_vs_MOD_E2_ranges_strict.csv

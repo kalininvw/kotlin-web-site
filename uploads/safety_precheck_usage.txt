@@ -1,0 +1,18 @@
+Safety precheck builder usage
+
+Goal:
+- Convert family manifest into actionable safety tasks before any controlled build.
+
+Run:
+  python3 /workspace/scripts/safety_precheck_builder.py \
+    --manifest-csv "/workspace/uploads/family_manifest_run/family_manifest.csv" \
+    --out-dir "/workspace/uploads/safety_precheck_run"
+
+Outputs:
+- safety_precheck_tasks.csv
+- controlled_build_queue.csv
+- safety_precheck_summary.txt
+
+Interpretation:
+- If controlled_build_queue is empty, do NOT start build pipeline.
+- Resolve all tasks in safety_precheck_tasks first.

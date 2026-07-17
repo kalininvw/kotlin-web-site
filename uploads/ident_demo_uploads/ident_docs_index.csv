@@ -1,0 +1,7 @@
+rel_path,file_name,extension,size_bytes,software_ids,bootloader_ids,hardware_ids,ecu_candidates,brand_candidates,path_brand_hints
+89663-F0N05_vs_MOD_E2_cluster_summary.txt,89663-F0N05_vs_MOD_E2_cluster_summary.txt,.txt,1077,89663-F0N05,,,,TOYOTA,
+89663-F0N05_vs_MOD_E2_clusters_gap16.csv,89663-F0N05_vs_MOD_E2_clusters_gap16.csv,.csv,3650,89663-F0N05,,,,,
+89663-F0N05_vs_MOD_E2_clusters_gap256.csv,89663-F0N05_vs_MOD_E2_clusters_gap256.csv,.csv,697,89663-F0N05,,,,,
+89663-F0N05_vs_MOD_E2_clusters_gap64.csv,89663-F0N05_vs_MOD_E2_clusters_gap64.csv,.csv,1718,89663-F0N05,,,,,
+89663-F0N05_vs_MOD_E2_diff_table.csv,89663-F0N05_vs_MOD_E2_diff_table.csv,.csv,41731,89663-F0N05,,,,,
+89663-F0N05_vs_MOD_E2_ranges_strict.csv,89663-F0N05_vs_MOD_E2_ranges_strict.csv,.csv,10324,89663-F0N05,,,,,

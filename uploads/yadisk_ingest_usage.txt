@@ -1,0 +1,32 @@
+Yandex Disk ingest usage (local folder sync)
+
+1) Sync your Yandex Disk folder locally (example):
+   /home/ubuntu/Yandex.Disk/firmware_base
+
+2) Run catalog ingest:
+   python3 /workspace/scripts/firmware_catalog_ingest.py \
+     --source "/home/ubuntu/Yandex.Disk/firmware_base" \
+     --out-dir "/workspace/uploads/yadisk_ingest_run"
+
+3) Generated files:
+   - firmware_catalog_index.csv
+   - firmware_catalog_stock_mod_pairs.csv
+   - firmware_catalog_feature_aliases.json
+   - firmware_catalog_ingest_summary.txt
+
+4) Next recommended steps:
+  - Identification docs ingest (core brand priority: Toyota/Haval/Kia/Hyundai):
+     python3 /workspace/scripts/ident_docs_ingest.py \
+       --source "/home/ubuntu/Yandex.Disk/firmware_base" \
+       --out-dir "/workspace/uploads/ident_run" \
+       --name-mode strict \
+       --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv"
+   - Stage core build with roadmap merge:
+     python3 /workspace/scripts/stage_core_builder.py \
+       --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+       --out-dir "/workspace/uploads/stage_core_run" \
+      --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_core_brands.csv"
+
+Notes:
+- The script only indexes metadata; it does not change firmware files.
+- Label logic is systemic (aliases like Stage1/E2/Euro2/RT47), not brand-specific hacks.
