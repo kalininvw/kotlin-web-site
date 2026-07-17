@@ -261,10 +261,65 @@ def write_summary(path: Path, families: Sequence[FamilyAggregate]) -> None:
     path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+def build_brand_roadmap(
+    families: Sequence[FamilyAggregate],
+    ident_priority_csv: Path,
+) -> List[Dict[str, str]]:
+    if not ident_priority_csv.exists():
+        return []
+
+    fam_by_sw: Dict[str, FamilyAggregate] = {}
+    fam_by_ecu: Dict[str, FamilyAggregate] = {}
+    for family in families:
+        if family.software_id:
+            fam_by_sw[family.software_id.upper()] = family
+        if family.ecu_primary:
+            fam_by_ecu[family.ecu_primary.upper()] = family
+
+    rows: List[Dict[str, str]] = []
+    with ident_priority_csv.open("r", encoding="utf-8") as handle:
+        reader = csv.DictReader(handle)
+        for row in reader:
+            target_brand = row.get("target_brand", "")
+            software_id = row.get("software_id", "").upper()
+            ecu_primary = row.get("ecu_primary", "").upper()
+            family = None
+            match_type = ""
+            if software_id and software_id in fam_by_sw:
+                family = fam_by_sw[software_id]
+                match_type = "software_id"
+            elif ecu_primary and ecu_primary in fam_by_ecu:
+                family = fam_by_ecu[ecu_primary]
+                match_type = "ecu_primary"
+
+            rows.append(
+                {
+                    "target_brand": target_brand,
+                    "priority_source": row.get("priority_source", ""),
+                    "family_key": row.get("family_key", ""),
+                    "software_id": row.get("software_id", ""),
+                    "ecu_primary": row.get("ecu_primary", ""),
+                    "matched_stage_family": family.family_key if family else "",
+                    "match_type": match_type,
+                    "readiness_status": family.readiness_status if family else "needs_data",
+                    "readiness_score": str(family.readiness_score) if family else "0",
+                    "recommended_action": (
+                        family.next_action if family else "collect-stock-mod-pair-and-ident-docs"
+                    ),
+                }
+            )
+    return rows
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build Stage1 core prep artifacts from index csv.")
     parser.add_argument("--index-csv", required=True, help="Path to firmware_catalog_index.csv")
     parser.add_argument("--out-dir", required=True, help="Output directory")
+    parser.add_argument(
+        "--ident-priority-csv",
+        default="",
+        help="Optional ident_brand_priority_toyota_haval.csv for roadmap merge.",
+    )
     args = parser.parse_args()
 
     index_csv = Path(args.index_csv).expanduser().resolve()
@@ -278,6 +333,7 @@ def main() -> None:
     backlog_csv = out_dir / "stage_core_backlog.csv"
     profiles_json = out_dir / "stage_core_operation_profiles.json"
     summary_txt = out_dir / "stage_core_summary.txt"
+    roadmap_csv = out_dir / "stage_core_brand_roadmap.csv"
 
     write_csv(
         families_csv,
@@ -328,12 +384,37 @@ def main() -> None:
     write_profiles(profiles_json)
     write_summary(summary_txt, families)
 
+    roadmap_rows: List[Dict[str, str]] = []
+    if args.ident_priority_csv:
+        ident_path = Path(args.ident_priority_csv).expanduser().resolve()
+        roadmap_rows = build_brand_roadmap(families, ident_priority_csv=ident_path)
+        write_csv(
+            roadmap_csv,
+            roadmap_rows,
+            [
+                "target_brand",
+                "priority_source",
+                "family_key",
+                "software_id",
+                "ecu_primary",
+                "matched_stage_family",
+                "match_type",
+                "readiness_status",
+                "readiness_score",
+                "recommended_action",
+            ],
+        )
+
     print(f"records={len(records)}")
     print(f"families={len(families)}")
+    if args.ident_priority_csv:
+        print(f"roadmap_rows={len(roadmap_rows)}")
     print(f"written={families_csv}")
     print(f"written={backlog_csv}")
     print(f"written={profiles_json}")
     print(f"written={summary_txt}")
+    if args.ident_priority_csv:
+        print(f"written={roadmap_csv}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,31 @@
+Identification docs ingest usage (id / bl / sw)
+
+Goal:
+- Extract known identifiers from text documents and build family hints.
+- Prioritize Toyota and Haval tracks for Stage1 core preparation.
+
+Run (strict filename filter: id/bl/sw/ident):
+  python3 /workspace/scripts/ident_docs_ingest.py \
+    --source "/home/ubuntu/Yandex.Disk/firmware_base" \
+    --out-dir "/workspace/uploads/ident_run" \
+    --name-mode strict \
+    --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv"
+
+Run (all text files in folder):
+  python3 /workspace/scripts/ident_docs_ingest.py \
+    --source "/home/ubuntu/Yandex.Disk/firmware_base" \
+    --out-dir "/workspace/uploads/ident_run_all" \
+    --name-mode all \
+    --firmware-index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv"
+
+Outputs:
+- ident_docs_index.csv
+- ident_family_hints.csv
+- ident_brand_priority_toyota_haval.csv
+- ident_entities_flat.csv
+- ident_ingest_summary.txt
+- ident_ingest_config.json
+
+Notes:
+- Source folder is read-only for this workflow.
+- Priority list is systemic and catalog-wide, with Toyota/Haval first.

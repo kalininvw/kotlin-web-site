@@ -1,0 +1,2 @@
+family_key,family_type,software_id,ecu_primary,doc_count,doc_paths,bootloader_ids,hardware_ids,ecu_candidates,brand_candidates,firmware_features,firmware_roles,firmware_file_count
+SW:89663-F0N05,software,89663-F0N05,,6,89663-F0N05_vs_MOD_E2_cluster_summary.txt|89663-F0N05_vs_MOD_E2_clusters_gap16.csv|89663-F0N05_vs_MOD_E2_clusters_gap256.csv|89663-F0N05_vs_MOD_E2_clusters_gap64.csv|89663-F0N05_vs_MOD_E2_diff_table.csv|89663-F0N05_vs_MOD_E2_ranges_strict.csv,,,,TOYOTA,euro2|mod,modified|stock_inferred|unknown,4

@@ -1,0 +1,6 @@
+Identification docs ingest summary
+source_root=/workspace/rt47_mg1_pages
+docs_indexed=9
+software_families=12
+priority_toyota=0
+priority_haval=12

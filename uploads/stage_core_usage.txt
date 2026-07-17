@@ -10,11 +10,18 @@ Stage core preparation usage
      --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
      --out-dir "/workspace/uploads/stage_core_run"
 
+2b) Build Stage1 core with Toyota/Haval identification priority merge:
+   python3 /workspace/scripts/stage_core_builder.py \
+     --index-csv "/workspace/uploads/yadisk_ingest_run/firmware_catalog_index.csv" \
+     --out-dir "/workspace/uploads/stage_core_run" \
+     --ident-priority-csv "/workspace/uploads/ident_run/ident_brand_priority_toyota_haval.csv"
+
 3) Stage core output:
    - stage_core_families.csv
    - stage_core_backlog.csv
    - stage_core_operation_profiles.json
    - stage_core_summary.txt
+   - stage_core_brand_roadmap.csv (when --ident-priority-csv is provided)
 
 Notes:
 - This step prepares family readiness and operation templates only.

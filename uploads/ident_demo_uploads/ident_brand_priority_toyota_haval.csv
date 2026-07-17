@@ -1,0 +1,2 @@
+target_brand,priority_source,family_key,family_type,software_id,ecu_primary,ecu_candidates,brand_candidates,bootloader_ids,hardware_ids,firmware_features,firmware_roles,firmware_file_count,doc_count,next_action
+TOYOTA,brand_explicit,SW:89663-F0N05,software,89663-F0N05,,,TOYOTA,,,euro2|mod,modified|stock_inferred|unknown,4,6,collect-stock-and-mod-binaries-if-missing

@@ -1,0 +1,9 @@
+{
+  "name_mode": "all",
+  "max_file_size_mb": 8,
+  "max_chars": 300000,
+  "notes": [
+    "Read-only source processing.",
+    "Toyota/Haval priority list is based on explicit brand match first, then heuristics."
+  ]
+}
