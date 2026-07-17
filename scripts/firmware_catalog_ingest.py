@@ -31,6 +31,15 @@ FIRMWARE_EXTENSIONS = {
     ".7z",
 }
 
+BINARY_EXTENSIONS = {
+    ".bin",
+    ".ori",
+    ".mod",
+    ".hex",
+    ".sgo",
+    ".frf",
+}
+
 SOFTWARE_PATTERNS: Sequence[re.Pattern[str]] = (
     re.compile(r"(?<![A-Z0-9])89663-[A-Z0-9]{3,6}(?:-[A-Z0-9]{1,3})?(?![A-Z0-9])", re.IGNORECASE),
     re.compile(r"(?<![A-Z0-9])89661-[A-Z0-9]{3,6}(?:-[A-Z0-9]{1,3})?(?![A-Z0-9])", re.IGNORECASE),
@@ -167,6 +176,7 @@ def build_records(root: Path, files: Iterable[Path]) -> List[FirmwareRecord]:
                 inferred_role=role,
             )
         )
+    apply_secondary_role_inference(records)
     return records
 
 
@@ -182,8 +192,12 @@ def link_stock_to_mod(records: Sequence[FirmwareRecord]) -> List[Dict[str, str]]
 
     pairs: List[Dict[str, str]] = []
     for sw, group in by_sw.items():
-        stocks = [r for r in group if r.inferred_role == "stock"]
-        mods = [r for r in group if r.inferred_role == "modified"]
+        stocks = [
+            r
+            for r in group
+            if r.extension in BINARY_EXTENSIONS and r.inferred_role in {"stock", "stock_inferred"}
+        ]
+        mods = [r for r in group if r.extension in BINARY_EXTENSIONS and r.inferred_role == "modified"]
         if not stocks or not mods:
             continue
         for stock in stocks:
@@ -204,6 +218,30 @@ def link_stock_to_mod(records: Sequence[FirmwareRecord]) -> List[Dict[str, str]]
                         }
                     )
     return pairs
+
+
+def apply_secondary_role_inference(records: Sequence[FirmwareRecord]) -> None:
+    """
+    If a software family has explicit modified files and another binary file
+    with the same software id has no modification labels, mark it as stock_inferred.
+    """
+    by_sw: Dict[str, List[FirmwareRecord]] = {}
+    for record in records:
+        for sw in record.software_candidates:
+            by_sw.setdefault(sw, []).append(record)
+
+    for sw, group in by_sw.items():
+        has_modified = any(r.inferred_role == "modified" and r.extension in BINARY_EXTENSIONS for r in group)
+        if not has_modified:
+            continue
+        for record in group:
+            if record.extension not in BINARY_EXTENSIONS:
+                continue
+            if record.inferred_role != "unknown":
+                continue
+            if record.features:
+                continue
+            record.inferred_role = "stock_inferred"
 
 
 def write_csv(path: Path, rows: Sequence[Dict[str, str]], fieldnames: Sequence[str]) -> None:

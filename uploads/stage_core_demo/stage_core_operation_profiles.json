@@ -1,0 +1,50 @@
+{
+  "version": "v1",
+  "principles": [
+    "Systemic catalog rules only; no brand-specific dialog hacks.",
+    "Normalize operation aliases before any routing.",
+    "Separate preparation/validation from binary transformation modules."
+  ],
+  "operations": {
+    "stage1": {
+      "aliases": [
+        "stage1",
+        "stage 1",
+        "st1",
+        "rt47 stage1",
+        "modrt47 stage1"
+      ],
+      "required_inputs": [
+        "stock_reference",
+        "target_file",
+        "family_id_or_software_id"
+      ],
+      "validation_checks": [
+        "ecu-family-consistency",
+        "size-compatibility",
+        "checksum-pipeline-available",
+        "post-build-diff-within-expected-zones"
+      ]
+    },
+    "euro2": {
+      "aliases": [
+        "euro2",
+        "euro-2",
+        "e2",
+        "mod e2",
+        "евро2"
+      ],
+      "required_inputs": [
+        "stock_reference",
+        "target_file",
+        "family_id_or_software_id"
+      ],
+      "validation_checks": [
+        "ecu-family-consistency",
+        "size-compatibility",
+        "dtc-table-presence-check",
+        "post-build-diff-within-expected-zones"
+      ]
+    }
+  }
+}
