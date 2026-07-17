@@ -454,6 +454,8 @@ def main() -> None:
     docs_csv = out_dir / "ident_docs_index.csv"
     family_csv = out_dir / "ident_family_hints.csv"
     priority_csv = out_dir / "ident_brand_priority_toyota_haval.csv"
+    priority_toyota_csv = out_dir / "ident_priority_toyota.csv"
+    priority_haval_csv = out_dir / "ident_priority_haval.csv"
     entities_csv = out_dir / "ident_entities_flat.csv"
     summary_txt = out_dir / "ident_ingest_summary.txt"
     config_json = out_dir / "ident_ingest_config.json"
@@ -514,6 +516,48 @@ def main() -> None:
         ],
     )
     write_csv(
+        priority_toyota_csv,
+        [row for row in priority_rows if row.get("target_brand") == "TOYOTA"],
+        [
+            "target_brand",
+            "priority_source",
+            "family_key",
+            "family_type",
+            "software_id",
+            "ecu_primary",
+            "ecu_candidates",
+            "brand_candidates",
+            "bootloader_ids",
+            "hardware_ids",
+            "firmware_features",
+            "firmware_roles",
+            "firmware_file_count",
+            "doc_count",
+            "next_action",
+        ],
+    )
+    write_csv(
+        priority_haval_csv,
+        [row for row in priority_rows if row.get("target_brand") == "HAVAL"],
+        [
+            "target_brand",
+            "priority_source",
+            "family_key",
+            "family_type",
+            "software_id",
+            "ecu_primary",
+            "ecu_candidates",
+            "brand_candidates",
+            "bootloader_ids",
+            "hardware_ids",
+            "firmware_features",
+            "firmware_roles",
+            "firmware_file_count",
+            "doc_count",
+            "next_action",
+        ],
+    )
+    write_csv(
         entities_csv,
         entities_rows,
         ["entity_type", "value", "rel_path"],
@@ -543,6 +587,8 @@ def main() -> None:
     print(f"written={docs_csv}")
     print(f"written={family_csv}")
     print(f"written={priority_csv}")
+    print(f"written={priority_toyota_csv}")
+    print(f"written={priority_haval_csv}")
     print(f"written={entities_csv}")
     print(f"written={summary_txt}")
     print(f"written={config_json}")

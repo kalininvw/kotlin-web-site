@@ -22,6 +22,8 @@ Outputs:
 - ident_docs_index.csv
 - ident_family_hints.csv
 - ident_brand_priority_toyota_haval.csv
+- ident_priority_toyota.csv
+- ident_priority_haval.csv
 - ident_entities_flat.csv
 - ident_ingest_summary.txt
 - ident_ingest_config.json
